@@ -5,7 +5,29 @@ import pickle, os, numpy as np
 app = Flask(__name__)
 CORS(app)
 
-MODELS_DIR = os.path.join(os.path.dirname(__file__), '..', 'models')
+
+def find_models_dir():
+    candidates = [
+        os.getenv('MODELS_DIR'),
+        os.path.join(os.path.dirname(__file__), '..', 'models'),
+        os.path.join(os.path.dirname(__file__), 'models'),
+        os.path.join(os.path.dirname(__file__), '..', '..', 'models'),
+    ]
+
+    for path in candidates:
+        if not path:
+            continue
+        path = os.path.abspath(path)
+        if os.path.isdir(path) and os.path.exists(os.path.join(path, 'genre_dt.pkl')):
+            return path
+
+    raise FileNotFoundError(
+        'Could not find models directory. Make sure the models folder is deployed with the backend. '
+        'If you deploy only the backend folder, copy the models into backend/models or set MODELS_DIR to the correct path.'
+    )
+
+MODELS_DIR = find_models_dir()
+
 
 def load_model(name):
     path = os.path.join(MODELS_DIR, f'{name}.pkl')
