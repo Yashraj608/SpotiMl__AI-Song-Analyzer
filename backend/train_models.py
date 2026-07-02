@@ -21,11 +21,11 @@ os.makedirs(MODELS_DIR, exist_ok=True)
  
 # ── features ─────────────────────────────────────────────
 FEATURE_COLS = [
-    'danceability','loudness','speechiness',
+    'danceability','energy','loudness','speechiness',
     'acousticness','instrumentalness','liveness',
     'valence','tempo','duration_ms','key','mode','time_signature'
 ]
- 
+
 # ── mood logic ───────────────────────────────────────────
 def get_mood(row):
     v, e = row['valence'], row['energy']

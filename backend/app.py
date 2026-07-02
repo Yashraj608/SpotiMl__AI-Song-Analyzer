@@ -36,6 +36,7 @@ def find_models_dir():
 
 MODELS_DIR = find_models_dir()
 MODELS_AVAILABLE = os.path.isdir(MODELS_DIR) and os.path.exists(os.path.join(MODELS_DIR, 'genre_dt.pkl'))
+print(f'Using models directory: {MODELS_DIR} | models available: {MODELS_AVAILABLE}')
 
 
 def load_model(name):
@@ -60,7 +61,7 @@ def load_label_encoders():
 LABEL_ENCODERS = load_label_encoders()
 
 FEATURE_COLS = [
-    'danceability','energy','loudness','speechiness',
+    'danceability','loudness','speechiness',
     'acousticness','instrumentalness','liveness',
     'valence','tempo','duration_ms','key','mode','time_signature'
 ]
