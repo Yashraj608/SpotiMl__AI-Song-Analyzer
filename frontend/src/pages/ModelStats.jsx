@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.MODE === "development"
+  ? "http://localhost:5000"
+  : "https://spotimlai-song-analyzer-production.up.railway.app");
 
 const ALGO_COLOR = {
   "Naive Bayes":"#4a9eff",
