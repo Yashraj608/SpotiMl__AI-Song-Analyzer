@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 const ALGO_COLOR = {
   "Naive Bayes":"#4a9eff",
   "Decision Tree":"#7c6af5",
@@ -51,7 +53,7 @@ export default function ModelStats() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/model_stats")
+    fetch(`${API_BASE}/api/model_stats`)
       .then(r => r.json())
       .then(d => {
         if (d.status === "success") setMetrics(d.metrics);

@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 const FEATURES = [
   { key:"danceability",      label:"Danceability",            min:0,     max:1,      step:0.01, default:0.5  },
   { key:"energy",            label:"Energy",                  min:0,     max:1,      step:0.01, default:0.5  },
@@ -263,7 +265,7 @@ export default function Predict() {
   const predict = async () => {
     setLoading(true); setError(null); setResults(null);
     try {
-      const res  = await fetch("http://localhost:5000/api/predict", {
+      const res  = await fetch(`${API_BASE}/api/predict`, {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body:JSON.stringify(values),
