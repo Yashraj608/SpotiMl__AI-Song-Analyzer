@@ -6,6 +6,9 @@ app = Flask(__name__)
 CORS(app)
 
 
+MODELS_AVAILABLE = False
+
+
 def find_models_dir():
     candidates = [
         os.getenv('MODELS_DIR'),
@@ -21,16 +24,24 @@ def find_models_dir():
         if os.path.isdir(path) and os.path.exists(os.path.join(path, 'genre_dt.pkl')):
             return path
 
-    raise FileNotFoundError(
-        'Could not find models directory. Make sure the models folder is deployed with the backend. '
-        'If you deploy only the backend folder, copy the models into backend/models or set MODELS_DIR to the correct path.'
+    # Fall back to a default path so the app can still start without models
+    default = os.path.abspath(os.path.join(os.path.dirname(__file__), 'models'))
+    print(
+        f'WARNING: Could not find a models directory containing genre_dt.pkl. '
+        f'Defaulting to {default}. '
+        f'Run train_models.py or set the MODELS_DIR environment variable to enable predictions.'
     )
+    return default
+
 
 MODELS_DIR = find_models_dir()
+MODELS_AVAILABLE = os.path.isdir(MODELS_DIR) and os.path.exists(os.path.join(MODELS_DIR, 'genre_dt.pkl'))
 
 
 def load_model(name):
     path = os.path.join(MODELS_DIR, f'{name}.pkl')
+    if not os.path.exists(path):
+        return None
     with open(path, 'rb') as f:
         return pickle.load(f)
 
@@ -42,7 +53,7 @@ def load_label_encoders():
         try:
             with open(path, 'rb') as f:
                 encoders[task] = pickle.load(f)
-        except FileNotFoundError:
+        except (FileNotFoundError, OSError):
             encoders[task] = None
     return encoders
 
@@ -56,6 +67,16 @@ FEATURE_COLS = [
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
+    if not MODELS_AVAILABLE:
+        return jsonify({
+            'status': 'unavailable',
+            'message': (
+                'Models have not been trained yet. '
+                'Run train_models.py to generate the required .pkl files and redeploy, '
+                'or set the MODELS_DIR environment variable to point to an existing models directory.'
+            )
+        }), 503
+
     data = request.json
     features = [float(data.get(f, 0)) for f in FEATURE_COLS]
     X = np.array(features).reshape(1, -1)
@@ -76,6 +97,9 @@ def predict():
         for algo in algos:
             try:
                 model = load_model(f'{task}_{algo}')
+                if model is None:
+                    results[task][algo_names[algo]] = {'error': f'Model file {task}_{algo}.pkl not found'}
+                    continue
                 pred_encoded = model.predict(X)[0]
                 # Decode integer back to the real label name (e.g. 0 → "Pop")
                 if le is not None:
