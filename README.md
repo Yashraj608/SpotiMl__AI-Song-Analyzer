@@ -96,3 +96,18 @@ Visit: **http://localhost:3000**
 - Model Stats page shows estimated values until you train models
 - Logistic Regression uses StandardScaler internally via Pipeline
 - Top 10 genres are used for cleaner multi-class results
+
+---
+
+## 🌐 Live Deployment
+
+The project has been successfully deployed and is publicly accessible.
+
+- **Frontend (Vercel):** https://spoti-ml-ai-song-analyzer.vercel.app/
+- **Backend (Railway):** https://spotimlai-song-analyzer-production.up.railway.app
+
+---
+
+## 👨‍💻 Developer
+
+**Developed by:** **Yash Raj**
