@@ -108,15 +108,6 @@ The project has been successfully deployed and is publicly accessible.
 
 ---
 
-## 🌐 Live Deployment
-
-The project has been successfully deployed and is publicly accessible.
-
-- **Frontend (Vercel):** https://spoti-ml-ai-song-analyzer.vercel.app/
-- **Backend (Railway):** https://spotimlai-song-analyzer-production.up.railway.app
-
----
-
 ## 👨‍💻 Developer
 
 **Developed by:** **Yash Raj**
