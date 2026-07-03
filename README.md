@@ -70,17 +70,6 @@ npm run dev                 # starts UI on http://localhost:3000
 
 ### Step 4 — Open the App
 Visit: **http://localhost:3000**
-
-### Deploying the frontend to Vercel
-1. In Vercel, create a new project from this repo.
-2. Set the root directory to `frontend`.
-3. Set the build command to `npm install && npm run build`.
-4. Set the output directory to `dist`.
-5. Add an environment variable:
-   - `VITE_API_BASE_URL=https://spotimlai-song-analyzer-production.up.railway.app`
-6. Deploy the project and verify the UI loads.
-7. The frontend will then use your Railway backend for `/api/predict` and `/api/model_stats`.
-
 ---
 
 ## Pages
