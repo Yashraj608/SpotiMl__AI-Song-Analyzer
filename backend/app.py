@@ -61,7 +61,7 @@ def load_label_encoders():
 LABEL_ENCODERS = load_label_encoders()
 
 FEATURE_COLS = [
-    'danceability','loudness','speechiness',
+    'danceability','energy','loudness','speechiness',
     'acousticness','instrumentalness','liveness',
     'valence','tempo','duration_ms','key','mode','time_signature'
 ]
